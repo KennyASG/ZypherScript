@@ -1,0 +1,192 @@
+
+ 
+
+Nombre del Lenguaje:
+ZYPHERSCRIPT
+
+Alfabeto
+lexema	token	Patron 
+T_alfabeto 	felizy	Una “f” seguida de una “e” seguida de una “l” seguida de una “i” seguida de una “z” seguida de “y”
+T_alfabeto 	nunizy	Una “n” seguida de una “u” seguida de una “n” seguida de una “i” seguida de una “z” seguida de una “y”
+T_alfabeto	Traizy 	Una “t” seguida de una “r” seguida de una “a” seguida de una “i” seguida de una “z” seguida de una “y”
+T_alfabeto	endzy	Una “e” seguida de una “n” seguida de una “d” seguida de una “z” seguida de una “y”
+T_alfabeto	enzy	Una “e” seguida de una “n” seguida de una “z” seguida de una “y”
+T_alfabeto	essirtzy	Una “e” seguida de una “s” seguida de una “s” seguida de una “s” seguida de una “i ” seguida de una “r” seguida de una “t” seguida de una “z” seguida de una “y”
+T_alfabeto	asynczy	Una “a” seguida de una “y” seguida de una “n” seguida de una “y” seguida de una “n” seguida de una “c” seguida de una “z” seguida de una “y”
+T_alfabeto	aweotzy	Una “a” seguida de una “w” seguida de una “e” seguida de una “o” seguida de una “z” seguida de una “y”
+T_alfabeto	Briekzy 	Una “b” seguida de una “r” seguida de una “i” seguida de una “e” seguida de una “k” seguida de una “z” seguida de una “y”
+T_alfabeto	clesszy	Una “c” seguida de una “l” seguida de una “e” seguida de una “s” seguida de una “s” seguida de una “z” seguida de una “y” 
+T_alfabeto	cuntonaizy	Una “c” seguida de una “u” seguida de una “n” seguida de una “t” seguida de una “o” seguida de una “a” seguida de una “i” seguida de una 
+“”z seguida de una “y” 
+T_alfabeto	difzy	Una “d” seguida de una “i” seguida de una “f” seguida de una  “f” seguida de una “y”
+T_alfabeto	dilzy	Una “d” seguida de una “i” seguida de una “l” seguida de una “z” seguída de una “y”
+T_alfabeto	ilofzy	Una “i” seguida de una “l” seguida de una “o” seguida de una “f” seguida de una “z” seguida de una “y”
+T_alfabeto	ilsizy	Una “i” seguida de una “l” seguida de una “s” seguida de una “i” seguida de una “z” seguida de una “y”
+T_alfabeto	ixciptzy	Una “i” seguida de una “x” seguida de una “c” seguida de una “i” seguida de una “p” seguida de una “t” seguida de una “z” seguida de una “y”
+T_alfabeto	fonellyzy	Una “f” seguida de una “o” seguida de una “n” seguida de una “e” seguida de una “l” seguida de una “l” seguida de una “y” seguida de una “z” seguida de una “y”
+T_alfabeto	furzy	Una “f” seguida de una “u” seguida de una “r” seguida de una “z” seguida de una “y” 
+T_alfabeto	frumzy	Una “f” seguida de una “t” seguida de una “u” seguida de una “m” seguida de una “z” seguida de una “y”
+T_alfabeto	Glubelzy	Una “g” seguida de una “l” seguida de una “u” seguida de una “b” seguida de una “e” seguida de una “l” seguida de una “l” seguida de una “z” seguida de una “y”
+T_alfabeto	olzy	Una “o” seguida de una “l” seguida de una “z” seguida de una “y” 
+T_alfabeto	ompurtzy	Una “o” seguida de una “m” seguida de una “p” seguida de una “u” seguida de una “r” seguida de una “t” seguida de una “z” seguida de una “y”
+T_alfabeto	onzy	Una “o” seguida de una “n” seguida de una “z” seguida de una “y” 
+T_alfabeto	oszy	Una “o” seguida de una “s” seguida de una “z” seguida de una “y” 
+T_alfabeto	lembdezy	Una “l” seguida de una “e” seguida de una “m” seguida de una “b” seguida de una “d” seguida de una “i” seguida de una “z” seguida de una “y”
+T_alfabeto	nunlucelzy	Una “n” seguida de una “u” seguida de una “n” seguida de una “l” seguida de una “u” seguida de una “c” seguida de una “e” seguida de una “l” seguida de una “z” seguida de una “y”
+T_alfabeto	nutzy	Una “n” seguida de una “”u seguida de una “y” seguida de una “z” seguida de una “y” 
+T_alfabeto	urzy	Una “u” seguida de una “r” seguida de una “z” seguida de una “y” 
+T_alfabeto	pesszy	Una “p” seguida de una “e” seguida de una “s” seguida de una “s” seguida de una “z” seguida de una “y”
+T_alfabeto	reosizy	Una “r” seguida de una “e” seguida de una “o” seguida de una “s” seguida de una “s” seguida de una “i” seguida de una “z” seguida de una “y”
+T_alfabeto	ritarnzy	Una “r” seguida de una “i” seguida de una “t” seguida de una “a” seguida de una “r” seguida de una “n” seguida de una “z” seguida de una “y”
+T_alfabeto	tryzy	Una “t” seguida de una “r” seguida de una “y” seguida de una “z” seguida de una “y” 
+T_alfabeto	wholizy	Una “w” seguida de una “h” seguida de una “o” seguida de una “l” seguida de una “i” seguida de una “z” seguida de una “y”
+
+
+
+
+DECLARACION DE VARIABLES:
+lexema	token	patron
+T_variable	Diametro altura
+IdDeposito
+SetValoresDeposito
+Valor_idDeposito
+Valor_diametro
+Valor_altura	Cualquier secuencia de caracteres ya sea en mayúsculas o minúsculas que no contengan un numero o símbolo y que no coincida con una palabra reservada. 
+
+PALABRAS RESERVADAS:
+
+LEXEMA	TOKEN	PATRON
+P_reserv	Traizy	Una “t” seguido de una “r” seguido de una “a” seguido de una “i” seguido de una “z” seguido de una “y”
+P_reserv	Ofzy (if)	Una “o” seguido de una “f” seguido de una “z” seguido de una “y” 
+P_reserv	Lostzy 	Una “l” seguido de una “o” seguido de una “s” seguido de una “t” seguido de una “z” seguido de una “y”
+P_reserv	Endzy	Una “e” seguido de una “n” seguido de una “d” seguido de una “z” seguido de una “y”
+P_reserv	Difzy	Una “d” seguido de una “i” seguido de una “f” seguido de una “z” seguido de una “y”
+P_reserv	Frumzy	Una “f” seguido de una “r” seguido de una “u” seguido de una “m” seguido de una “z” seguido de una “y”
+P_reserv	eszy	Una “e” seguido de una “s” seguido de una “z” seguido de una “y”
+P_reserv	Dilzy	Una “d” seguido de una “i” seguido de una “l” seguido de una “z” seguido de una “y” 
+P_reserv	onzy	Una “o” seguido de una “n” seguido de una “z” seguido de una “y” 
+P_reserv	Finallyzy	Una “f” seguido de una “i” seguido de una “n” seguido de una “a” seguido de una “l” seguido de una “l” seguido de una “z” seguido de una “y”
+P_reserv	Felsizy	Una “f” seguido de una “e” seguido de una “l” seguido de una “s” seguido de una “i” seguido de una “z” seguido de una “y”
+P_reserv	urzy	Una “u” seguido de una “r” seguido de una “z” seguido de una “y”
+P_reserv	Nutzy	Una “n” seguido de una “u” seguido de una “t” seguido de una “z” seguido de una “y” 
+P_reserv	ritarnzy	Una “r” seguido de una “i” seguido de una “t” seguido de una “a” seguido de una “r” seguido de una “n” seguido de una “z” seguido de una “y”
+Preserv	prontzy	Una “p” seguido de una “r” seguido de una “o” seguido de una “n” seguido de una “t” seguido de una “z” seguido de una “y”
+P_reserv	thinzy	Una “t” seguido de una “h” seguido de una “i” seguido de una “n” seguido de una “z” seguido de una “y”
+P_reserv	onpatzy	Una “o” seguido de una “n” seguido de una “p” seguido de una “a” seguido de una “t” seguido de una “z” seguido de una “y”
+
+
+
+
+
+
+
+
+
+Tipos de datos 
+lexema	token	patron
+T_numero	ontzy	Una “o” seguida de una “n” seguida de una “t” seguida de una “z” seguida de una “y” 
+T_numero 	fluetzy	Una “f” seguida de una “l” seguida de una “u” seguida de una “e” seguida de una “t” seguida de una “z” seguida de una “y”
+T_numero	cumplixzy	Una “c” seguida de una “u” seguida de una “m” seguida de una “p” seguida de una “l” seguida de una “l” seguida de una “x” seguida de una “z” seguida de una “y”
+ 
+lexema	token 	Patron
+T_Booleano	traizy	Una “t” seguida de una “r” seguida de una “a” seguida de una “i” seguida de una “z” seguida de una “y”
+T_booleano	felsizy	Una “f” seguida de una “e” seguida de una “l” seguida de una “s” seguida de una “i” seguida de una “z” seguida de una “y”
+ 
+lexema	token	patron
+T_texto	strongzy	Una “s” seguida de una “t” seguida de una “r” seguida de una “o” seguida de una “n” seguida de una “g” seguida de una “z” seguida de una “y”
+T_texto	Rew strong	Una “R” seguida de una “e” seguida de una “w” seguida de un “ ” seguida de una “s” seguida de una “t” seguida de una “r” seguida de una “o” seguida de una “n” seguida de una “g” seguida de una “z” seguida de una “y”
+T_texto	f-strong	Una “f” seguida de una “-” seguida de seguida de una “s” seguida de una “t” seguida de una “r” seguida de una “o” seguida de una “n” seguida de una “g” seguida de una “z” seguida de una “y” 
+ 
+
+
+lexema	token	Patron
+T_lista	lostzy	Una “l” seguida de una “o” seguida de una “s” seguida de una “t” seguida de una “z” seguida de una “y”
+ 
+T_truplas	traplizy	Una “t” seguida de una “r” seguida de una “a” seguida de una “p” seguida de una “l” seguida de una “i” seguida de una “z” seguida de una “y”
+ 
+lexema	token	Patron
+T_conjuntos	sitzy	Una “s” seguida de una “i” seguida de una “t” seguida de una “z” seguida de una “y”
+T_conjuntos	fruzinsitzy	Una “f” seguida de una “r” seguida de una “u” seguida de una “z” seguida de una “i” seguida de una “n” seguida de una “s” seguida de una “i” seguida de una “t” seguida de una “z” seguida de una “y”
+ 
+lexema	token	Patron
+T_diccionario	doctzy	Una “d” seguida de una “o” seguida de una “c” seguida de una “t” seguida de una “z” seguida de una “y”
+ 
+lexema	token	Patron
+T_nonetype	nunizy	Una “n” seguida de una “u” seguida de una “n” seguida de una “i” seguida de una “z” seguida de una “y”
+
+
+
+ 
+OPERADORES ARITMETICOS
+lexema	token	patron
+T_aritmetico	/	carácter "/"
+T_aritmetico	-	carácter "-"
+T_aritmetico	*	carácter "*"
+T_aritmetico	+	carácter "+"
+T_aritmetico	**	carácter "**"
+OPERADORES DE ASIGNACION
+lexema	token	patron
+T_asignacion	=	carácter "="
+T_asignacion	+=	carácter "+" seguido de carácter "="
+T_asignacion	-=	carácter "-" seguido de carácter "="
+T_asignacion	*=	carácter "*" seguido de carácter "="
+T_asignacion	/=	carácter "/" seguido de carácter "="
+T_asignacion	%=	carácter "%" seguido de carácter "="
+T_asignacion	**=	carácter ""**"" seguido de carácter "="
+T_asignacion	=	carácter "="
+OPERADORES DE COMPARACION
+ lexema	token	patron
+T_comparacion	==	carácter"=="
+T_comparacion	!=	carácter"!="
+T_comparacion	>	carácter">"
+T_comparacion	<	carácter"<"
+T_comparacion	>=	carácter">="
+T_comparacion	<=	carácter"<=" 
+OPERADORES LOGICOS
+lexema	token	patron
+T_logicos	endzy	una "e" seguida de una "n" seguida de una "d" seguida de una "z" seguida de una "y"
+T_logicos	urzy	una "u" seguida de una "r" seguida de una "z" seguida de una "y"
+T_logicos	nutzy	una "n" seguida de una "u" seguida de una "t" seguida de una "z" seguida de una "y"
+
+
+
+
+
+OPERADORES DE IDENTIDAD
+lexema	token	patron
+T_identidad	oszy	una "o" seguida de una "s" seguida de una "z" seguida de una "y"
+T_identidad	osnutzy	una "o" seguida de una "s" seguida de una "n" seguida de una "u" seguida de una "t" seguida de una "z" seguida de una "y"
+
+SENTENCIAS DE CONTROL: 
+
+LEXEMA	TOKEN	PATRÓN
+S_control	ofzy	Una “o” seguido de una “f” seguido de una “z” seguido de una “y”
+S_control	ilofzy	Una “i” seguido de una “l” seguido de una “o” seguido de una “f” seguido de una “z” seguido de una “y”
+S_control	ilsezy	Una “i” seguido de una “l” seguido de una “s” seguido de una “e” seguido de una “z” seguido de una “y”
+S_control	Wholizy	Una “w” seguido de una “h” seguido de una “o” seguido de una “l” seguido de una “i” seguido de una “z” seguido de una “y”
+S_control	furzy	Una “f” seguido de una “u” seguido de una “r” seguido de una “z” seguido de una “y” 
+S_control	briekzy	Una “b” seguido de una “r” seguido de una “i” seguido de una “e” seguido de una “k” seguido de una “z” seguido de una “y”
+S_control	cuntonaizy	Una “c” seguido de una “u” seguido de una “n” seguido de una “t” seguido de una “o” seguido de una “n” seguido de una “a” seguido de una “i” seguido de una “z” seguido de una “y”
+S_control 	for	Una “f” seguido de una “o” seguido de una “r”
+S_control	while	Una “w” seguido de una “h” seguido de una “i” seguido de una “l” seguido de una “e”
+
+
+
+Ciclos
+lexema	token	patron
+T_ciclos	wholzy	Una “w” seguida de una “h” seguida de una “o” seguida de una “l” seguida de una “i” seguida de una “z” seguida de una “y”
+T_ciclos	furzy	Una “f” seguida de una “u” seguida de una “r” seguida de una “z” seguida de una “y”
+T_ciclos	duzy	Una “d”  seguida de una “u” seguida de una “z” seguida de una  “y”
+
+Modificadores de Acceso
+lexema	token	patron
+T_modificador	(ninguno)	(sin guiones bajos)
+T_modificador	“_”	Carácter guion bajo “_” al inicio del atributo o método de clase.
+T_modificador	“__”	Carácter guiones bajos “__” al inicio del atributo o método de clase.
+
+Enumeraciones 
+Lexema	token	Patron
+T_enumeracion	Inamzy	Una “i” seguida de una “n” seguida de una “a” seguida de una “m” seguida de una “z” seguida de una “y” 
+T_enumeracion	ontinamzy	Una “o” seguida de una “n” seguida de una “t” seguida de una “i” seguida de una “n” seguida de una “a” seguida de una “m” seguida de una “z” seguida de una “y”
+T_enumeracion	Str,inamzy	Una “s” seguida de una “t” seguida de una “r” seguida de una “,” seguida de Una “i” seguida de una “n” seguida de una “a” seguida de una “m” seguida de una “z” seguida de una “y”
+
