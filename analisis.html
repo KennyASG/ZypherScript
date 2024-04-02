@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Example</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="CSS/analisis.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="imgs/ZypherScript.jpeg" alt="Logo" height="40" class="d-inline-block align-top">
+    ZypherScript
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">Inicio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="analisis.html">Análisis de Archivos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="progra.html">Realizar Programación</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5 container-form">
+  <h2 class="form-title">Cargar Archivo .zy</h2>
+  <form action="tu_script_de_procesamiento.php" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="zyFile">Seleccionar archivo .zy</label>
+      <input type="file" class="form-control-file" id="zyFile" name="zyFile" accept=".zy">
+    </div>
+    <button type="submit" class="btn btn-primary">Cargar Archivo</button>
+  </form>
+
+  <!-- Cuadro de texto para mostrar el contenido del archivo .zy -->
+  <div class="form-group mt-4">
+    <label for="zyFileContent">Contenido del archivo .zy</label>
+    <textarea id="zyFileContent" class="form-control" rows="10"></textarea>
+  </div>
+</div>
+
+<!-- Bootstrap JS (Optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script para mostrar el contenido del archivo .zy -->
+<script>
+document.getElementById('zyFile').addEventListener('change', function(e) {
+  var archivo = e.target.files[0];
+  if (!archivo) {
+    return;
+  }
+
+  var lector = new FileReader();
+
+  lector.onload = function(e) {
+    var contenido = e.target.result;
+    document.getElementById('zyFileContent').value = contenido;
+  };
+
+  lector.readAsText(archivo);
+});
+</script>
+
+</body>
+</html>

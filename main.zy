@@ -1,0 +1,10 @@
+#Operadores logicos and, or, not
+
+gas=False
+encendido=True
+edad=15
+
+if gas and encendido and edad <25:
+    print("Puedes avanzar")
+else:
+    print("Ve a otro lugar")
