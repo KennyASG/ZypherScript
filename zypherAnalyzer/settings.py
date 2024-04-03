@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure--))ig_w-6eb!t)yw8kic2!vhcgezk1o09iwa6=3&a8qc5)4w1=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.zypherscript.site']
 
 
 # Application definition
