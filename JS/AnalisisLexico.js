@@ -93,16 +93,15 @@ document.addEventListener('DOMContentLoaded', function () {
     //BOTONES -----------------------------------------------------------------------------------------
     // BOTON ANALIZADOR LEXICO
     document.getElementById('lexicalAnalysisButton').addEventListener('click', function () {
+        for (let i = 0; i < editor.lineCount(); i++) {
+            editor.removeLineClass(i, 'background', 'linea-con-error');
+        }
+
         const codigo = editor.getValue();
         const resultado = analizarLexico(codigo);
         console.log("Análisis léxico completado.");
         alert("Análisis léxico completado.");
-        if (resultado.errores.length === 0) {
-            for (let i = 0; i < editor.lineCount(); i++) {
-                editor.removeLineClass(i, 'background', 'linea-con-error');
-            }
-        }
-        window.tokensGlobal = resultado.tokens; // Guardar tokens en una variable global
+                window.tokensGlobal = resultado.tokens; // Guardar tokens en una variable global
         window.erroresLexicosGlobal = resultado.errores; // Guardar errores en una variable global
     });
 
