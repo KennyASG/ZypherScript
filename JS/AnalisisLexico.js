@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     //FUNCIONES ----------------------------------------------------------------------------------------
-    function analizarLexico(texto) {
+   function analizarLexico(texto) {
         const tokens = [];
         const errores = [];
         let lineaActual = 1;
         const regexPatterns = [
             { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
-             // Asegúrate de manejar nuevaLinea antes que otros tokens            
+            { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
             { tipo: 'palabrasClave', regex: /\b(BANDERIN|ANOTAR|GOL|VASCULACION|DISPARO|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|SAQUE_DE_PORTERIA|LOCAL|FISICO|CONTRA_ATAQUE|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|CARRERA)\b/g },
             { tipo: 'tiposDatos', regex: /\b(DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL|ARBITRO)\b/g },
             { tipo: 'controlJuego', regex: /\b(PASE|RECHAZO|PASE_FILTRADO|OPCION|FALTA|DEFECTO|DRIBLE|REGATEO|TIRO_REGATEO)\b/g },
@@ -35,8 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (match.index === pos) {  // Asegurar que el match comience donde estamos buscando
                     if (match.type === 'nuevaLinea') {
                         lineaActual++;
-                    } else {
+                    } 
+                    else {
                         tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
+                        if (match.type === 'comentarios' && match[0].endsWith('\n')) {
+                            lineaActual++;  // Incrementa la línea solo si el comentario incluye un salto de línea
+                        }
                     }
                     pos += matchLength;  // Mover posición sólo después de procesar un match válido
                 } else {
