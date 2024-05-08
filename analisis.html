@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/javascript/javascript.min.js"></script>
+    <script src="JS/AnalisisLexico.js"></script>
 
 </head>
 <body>
@@ -46,12 +47,56 @@
 
      <!-- Botones -->
      <div class="mt-3">
-        <button class="ov-btn-grow-skew-reverse">Análisis Léxico</button>
-        <button class="ov-btn-grow-skew-reverse">Análisis Sintáctico</button>
+        <button id="lexicalAnalysisButton" class="ov-btn-grow-skew-reverse">Análisis Léxico</button>
+        <button id="syntaxAnalysisButton" class="ov-btn-grow-skew-reverse">Análisis Sintáctico</button>
+        <button id="displayErrorTableButton" class="ov-btn-grow-skew-reverse">Mostrar Tabla de Errores</button>
+        <button id="displayTokenTableButton" class="ov-btn-grow-skew-reverse">Mostrar Tabla de Tokens</button>
     </div>
-
-
 </div>
+
+<!--TABLA DE ERRORES-->
+<div id="errorTableModal" class="modal">
+    <div style="padding: 20px;">
+        <h2>Tabla de Errores</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Línea</th>
+                    <th>Tipo de Error</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody id="errorTableBody">
+                <!-- ERRORES SE INSERTARAN AQUI -->
+            </tbody>
+        </table>
+
+        <br><button onclick="document.getElementById('errorTableModal').style.display='none';">Cerrar</button></br>
+    </div>
+</div>
+
+<!-- TABLA DE TOKENS -->
+<div id="tokenTableModal" class="modal">
+    <div style="padding: 20px;">
+        <h2>Tabla de Tokens</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Línea</th>
+                    <th>Token</th>
+                    <th>Tipo</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody id="tokenTableBody">
+                <!-- TOKENS SE INSERTARAN AQUI -->
+            </tbody>
+        </table>
+        <button onclick="document.getElementById('tokenTableModal').style.display='none';">Cerrar</button>
+    </div>
+</div>
+
+
 
 <div class="hero"> 
     <div class="cube"></div>
@@ -91,6 +136,8 @@
     });
 
 </script>
+
+
 
 </body>
 </html>

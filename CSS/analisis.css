@@ -148,3 +148,66 @@ body {
   .CodeMirror {
     text-align: left; /* Alinea el texto a la izquierda dentro del editor */
 }
+
+
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  width: 80%;
+  max-width: 600px;
+  display: none;
+  padding: 20px;
+  overflow: hidden; /* Asegura que nada del modal se desborde */
+  overflow-y: auto;
+}
+
+.modal-content {
+  max-height: 500px; /* Ajusta según tus necesidades */
+  overflow-y: auto; /* Habilita scroll vertical cuando sea necesario */
+}
+
+.modal table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.modal th, .modal td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  color: #666;
+}
+
+.modal th {
+  background-color: #f8f8f8;
+}
+
+.modal button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px 0;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal button:hover {
+  background-color: #45a049;
+}
+
+
+
+
