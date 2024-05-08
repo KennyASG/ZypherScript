@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     //FUNCIONES ----------------------------------------------------------------------------------------
-   function analizarLexico(texto) {
+    function analizarLexico(texto) {
         const tokens = [];
         const errores = [];
         let lineaActual = 1;
@@ -8,14 +8,15 @@ document.addEventListener('DOMContentLoaded', function () {
             { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
             { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
             { tipo: 'palabrasClave', regex: /\b(BANDERIN|ANOTAR|GOL|VASCULACION|DISPARO|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|SAQUE_DE_PORTERIA|LOCAL|FISICO|CONTRA_ATAQUE|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|CARRERA)\b/g },
-            { tipo: 'tiposDatos', regex: /\b(DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL|ARBITRO)\b/g },
+            { tipo: 'palabraReservada_tiposDatos', regex: /\b(BANDERIN|DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL|ARBITRO)\b/g },
             { tipo: 'controlJuego', regex: /\b(PASE|RECHAZO|PASE_FILTRADO|OPCION|FALTA|DEFECTO|DRIBLE|REGATEO|TIRO_REGATEO)\b/g },
             { tipo: 'numeros', regex: /\b\d+\b/g },
-            { tipo: 'identificadores', regex: /\^\b[a-zA-Z][_a-zA-Z0-9]*\b\$/g },
+            { tipo: 'identificadores', regex: /\b[a-zA-Z][_a-zA-Z0-9]*\b/g },
             { tipo: 'simbolos', regex: /[!@#%&*()_\-=+\[\]{}\\|:;'<>.\/]+/g }
         ];
 
         let pos = 0;
+        let lastPos = 0;
 
         while (pos < texto.length) {
             let match = null;
@@ -32,22 +33,34 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (match) {
-                if (match.index === pos) {  // Asegurar que el match comience donde estamos buscando
-                    if (match.type === 'nuevaLinea') {
-                        lineaActual++;
-                    } 
-                    else {
-                        tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
-                        if (match.type === 'comentarios' && match[0].endsWith('\n')) {
-                            lineaActual++;  // Incrementa la línea solo si el comentario incluye un salto de línea
-                        }
+                if (match.index > lastPos) {
+                    // Hay texto que no coincide entre lastPos y match.index
+                    const unknownText = texto.substring(lastPos, match.index).trim();
+                    if (unknownText) {
+                        errores.push({ linea: lineaActual, tipo: "Símbolo o letra no reconocido", valor: unknownText });
+                        // Resaltar la línea que contiene el error
+                        editor.addLineClass(lineaActual - 1, 'background', 'linea-con-error');
                     }
-                    pos += matchLength;  // Mover posición sólo después de procesar un match válido
-                } else {
-                    pos = match.index;
                 }
+                if (match.type === 'nuevaLinea') {
+                    lineaActual++;
+                } else {
+                    tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
+                    if (match.type === 'comentarios' && match[0].endsWith('\n')) {
+                        lineaActual++;  // Incrementa la línea solo si el comentario incluye un salto de línea
+                    }
+                }
+                pos = lastPos = match.index + matchLength;
             } else {
                 pos++;
+            }
+        }
+
+        // Verificar si hay texto no reconocido al final del archivo
+        if (lastPos < texto.length) {
+            const unknownText = texto.substring(lastPos).trim();
+            if (unknownText) {
+                errores.push({ linea: lineaActual, tipo: "Símbolo o letra no reconocido", valor: unknownText });
             }
         }
 
@@ -72,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         errores.forEach(function (error) {
             var tr = document.createElement('tr');
-            tr.innerHTML = `<td>${error.linea}</td><td>${error.tipo}</td><td>${error.mensaje}</td>`;
+            tr.innerHTML = `<td>${error.linea}</td><td>${error.tipo}</td><td>${error.valor}</td>`;
             tbody.appendChild(tr);
         });
     }
@@ -84,6 +97,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const resultado = analizarLexico(codigo);
         console.log("Análisis léxico completado.");
         alert("Análisis léxico completado.");
+        if (resultado.errores.length === 0) {
+            for (let i = 0; i < editor.lineCount(); i++) {
+                editor.removeLineClass(i, 'background', 'linea-con-error');
+            }
+        }
         window.tokensGlobal = resultado.tokens; // Guardar tokens en una variable global
         window.erroresLexicosGlobal = resultado.errores; // Guardar errores en una variable global
     });

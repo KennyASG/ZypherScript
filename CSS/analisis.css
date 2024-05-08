@@ -208,6 +208,8 @@ body {
   background-color: #45a049;
 }
 
-
+.linea-con-error {
+  background-color: #fc4f4f; /* Cambia el color de fondo a rojo claro */
+}
 
 
