@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
         let lineaActual = 1;
         const regexPatterns = [
             { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
-            { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
+             // Asegúrate de manejar nuevaLinea antes que otros tokens            
             { tipo: 'palabrasClave', regex: /\b(BANDERIN|ANOTAR|GOL|VASCULACION|DISPARO|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|SAQUE_DE_PORTERIA|LOCAL|FISICO|CONTRA_ATAQUE|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|CARRERA)\b/g },
             { tipo: 'tiposDatos', regex: /\b(DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL|ARBITRO)\b/g },
             { tipo: 'controlJuego', regex: /\b(PASE|RECHAZO|PASE_FILTRADO|OPCION|FALTA|DEFECTO|DRIBLE|REGATEO|TIRO_REGATEO)\b/g },
             { tipo: 'numeros', regex: /\b\d+\b/g },
-            { tipo: 'identificadores', regex: /\b[a-zA-Z_][_a-zA-Z0-9]*\b/g },
-            { tipo: 'simbolos', regex: /[!@#%^&*()_\-=+\[\]{}\\|:;'<>.\/]+/g }
+            { tipo: 'identificadores', regex: /\^\b[a-zA-Z][_a-zA-Z0-9]*\b\$/g },
+            { tipo: 'simbolos', regex: /[!@#%&*()_\-=+\[\]{}\\|:;'<>.\/]+/g }
         ];
 
         let pos = 0;
