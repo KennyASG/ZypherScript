@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let lineaActual = 1;
         let indexLineaActual = 0; // Indica el índice del inicio de la línea actual en el texto completo
         const regexPatterns = [
-            { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
+            { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g}, // Asegúrate de que la regex maneja los comentarios correctamente
             { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
             { tipo: 'palabrasClave', regex: /\b(BANDERIN|ANOTAR|GOL|VASCULACION|DISPARO|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|SAQUE_DE_PORTERIA|LOCAL|FISICO|CONTRA_ATAQUE|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|CARRERA)\b/g },
             { tipo: 'palabraReservada_tiposDatos', regex: /\b(BANDERIN|DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL|ARBITRO)\b/g },
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let lastPos = 0;
 
         while (pos < texto.length) {
+            console.log(`Inicio del bucle - pos: ${pos}, lastPos: ${lastPos}, indexLineaActual: ${indexLineaActual}, lineaActual: ${lineaActual}`);
             let match = null;
             let matchLength = 0;
 
@@ -33,8 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     matchLength = found[0].length;
                 }
             });
-
+            let startCh = match.index - indexLineaActual; // Posición de inicio relativa al inicio de la línea
+            let endCh = startCh + match[0].length; // Posición de final relativa al inicio de la línea
+            let from = { line: lineaActual - 1, ch: startCh };
+            let to = { line: lineaActual - 1, ch: endCh };
+            console.log(`from: ${from} , to: ${to}`);
             if (match) {
+                console.log(`Match encontrado - Tipo: ${match.type}, Valor: ${match[0]}, startCh: ${startCh}, endCh: ${endCh}`);
                 if (match.index > lastPos) {
                     // Hay texto que no coincide entre lastPos y match.index
                     const unknownText = texto.substring(lastPos, match.index).trim();
@@ -44,23 +50,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         editor.addLineClass(lineaActual - 1, 'background', 'linea-con-error');
                     }
                 }
-
-                let startCh = match.index - indexLineaActual; // Posición de inicio relativa al inicio de la línea
-                let endCh = startCh + match[0].length; // Posición de final relativa al inicio de la línea
-                let from = { line: lineaActual - 1, ch: startCh };
-                let to = { line: lineaActual - 1, ch: endCh };
-                if (match.type === 'comentarios') {
-                    lineaActual++;
-                    indexLineaActual = pos + matchLength; // Actualizar el índice del inicio de la nueva línea
-                    editor.markText(from, to, { className: 'comentario' });
-                    tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
-                }
                 if (match.type === 'nuevaLinea') {
+                    console.log(`Antes del salto de línea - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
                     lineaActual++;
                     indexLineaActual = pos + matchLength; // Actualizar el índice del inicio de la nueva línea
+                    console.log(`Después del salto de línea - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
                 } else {
                     tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
-                    if (match.type === 'palabrasClave' || match.type === 'palabraReservada_tiposDatos' || match.type === 'controlJuego') {
+                    if (match.type === 'comentarios') {
+                        console.log(`Antes del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
+                        lineaActual++;
+                        indexLineaActual = pos + matchLength; // Actualizar el índice del inicio de la nueva línea
+                        editor.markText(from, to, { className: 'comentario' });
+                        console.log(`Después del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
+                    } else if (match.type === 'palabrasClave' || match.type === 'palabraReservada_tiposDatos' || match.type === 'controlJuego') {
                         editor.markText(from, to, { className: 'palabraReservada' });
                     } else if (match.type === 'numeros') {
                         editor.markText(from, to, { className: 'numero' });
@@ -72,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 pos++;
             }
+            console.log(`Fin del bucle - pos: ${pos}, lastPos: ${lastPos}`);
         }
 
         // Verificar si hay texto no reconocido al final del archivo
