@@ -212,4 +212,18 @@ body {
   background-color: #fc4f4f; /* Cambia el color de fondo a rojo claro */
 }
 
+.comentario {
+  color: green;
+}
 
+.palabraReservada {
+  color: blue;
+}
+
+.numero {
+  color: purple;
+}
+
+.mensajeSalida {
+  color: orangered;
+}

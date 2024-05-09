@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const tokens = [];
         const errores = [];
         let lineaActual = 1;
+        let indexLineaActual = 0; // Indica el índice del inicio de la línea actual en el texto completo
         const regexPatterns = [
             { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
             { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
@@ -12,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
             { tipo: 'controlJuego', regex: /\b(PASE|RECHAZO|PASE_FILTRADO|OPCION|FALTA|DEFECTO|DRIBLE|REGATEO|TIRO_REGATEO)\b/g },
             { tipo: 'numeros', regex: /\b\d+\b/g },
             { tipo: 'identificadores', regex: /\b[a-zA-Z][_a-zA-Z0-9]*\b/g },
-            { tipo: 'simbolos', regex: /[!@#%&*()_\-=+\[\]{}\\|:;'<>.\/]+/g }
+            { tipo: 'simbolos', regex: /[!@#%&*()_\-=+\[\]{}\\|:;'<>.\/]+/g },
+            { tipo: 'mensajeSalida', regex: /"[^"]*"/g }  // Añadir esta nueva línea para manejar los mensajes de salida entre comillas
         ];
 
         let pos = 0;
@@ -42,12 +44,28 @@ document.addEventListener('DOMContentLoaded', function () {
                         editor.addLineClass(lineaActual - 1, 'background', 'linea-con-error');
                     }
                 }
+
+                let startCh = match.index - indexLineaActual; // Posición de inicio relativa al inicio de la línea
+                let endCh = startCh + match[0].length; // Posición de final relativa al inicio de la línea
+                let from = { line: lineaActual - 1, ch: startCh };
+                let to = { line: lineaActual - 1, ch: endCh };
+                if (match.type === 'comentarios') {
+                    lineaActual++;
+                    indexLineaActual = pos + matchLength; // Actualizar el índice del inicio de la nueva línea
+                    editor.markText(from, to, { className: 'comentario' });
+                    tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
+                }
                 if (match.type === 'nuevaLinea') {
                     lineaActual++;
+                    indexLineaActual = pos + matchLength; // Actualizar el índice del inicio de la nueva línea
                 } else {
                     tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
-                    if (match.type === 'comentarios' && match[0].endsWith('\n')) {
-                        lineaActual++;  // Incrementa la línea solo si el comentario incluye un salto de línea
+                    if (match.type === 'palabrasClave' || match.type === 'palabraReservada_tiposDatos' || match.type === 'controlJuego') {
+                        editor.markText(from, to, { className: 'palabraReservada' });
+                    } else if (match.type === 'numeros') {
+                        editor.markText(from, to, { className: 'numero' });
+                    } else if (match.type === 'mensajeSalida') {
+                        editor.markText(from, to, { className: 'mensajeSalida' });
                     }
                 }
                 pos = lastPos = match.index + matchLength;
@@ -89,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
             tbody.appendChild(tr);
         });
     }
+
     //FIN FUNCIONES -----------------------------------------------------------------------------------
     //BOTONES -----------------------------------------------------------------------------------------
     // BOTON ANALIZADOR LEXICO
@@ -101,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const resultado = analizarLexico(codigo);
         console.log("Análisis léxico completado.");
         alert("Análisis léxico completado.");
-                window.tokensGlobal = resultado.tokens; // Guardar tokens en una variable global
+        window.tokensGlobal = resultado.tokens; // Guardar tokens en una variable global
         window.erroresLexicosGlobal = resultado.errores; // Guardar errores en una variable global
     });
 
