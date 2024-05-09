@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let lineaActual = 1;
         let indexLineaActual = 0; // Indica el índice del inicio de la línea actual en el texto completo
         const regexPatterns = [
-            { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g}, // Asegúrate de que la regex maneja los comentarios correctamente
+            { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
             { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
             { tipo: 'palabrasClave', regex: /\b(BANDERIN|ANOTAR|GOL|VASCULACION|DISPARO|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|SAQUE_DE_PORTERIA|LOCAL|FISICO|CONTRA_ATAQUE|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|CARRERA)\b/g },
             { tipo: 'palabraReservada_tiposDatos', regex: /\b(BANDERIN|DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL|ARBITRO)\b/g },
@@ -55,12 +55,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     lineaActual++;
                     indexLineaActual = pos + matchLength; // Actualizar el índice del inicio de la nueva línea
                     console.log(`Después del salto de línea - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
+                } else if (match.type === 'identificadores') {
+                    const resultadoVerificacion = verificarPalabraReservadaMalEscrita(match[0]);
+                    if (resultadoVerificacion.esMalEscrita) {
+                        errores.push({ linea: lineaActual, tipo: "Palabra reservada mal escrita", valor: match[0] });
+                        editor.addLineClass(lineaActual - 1, 'background', 'linea-con-error');
+                    } else {
+                        tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
+                    }
                 } else {
                     tokens.push({ tipo: match.type, valor: match[0].trim(), linea: lineaActual });
                     if (match.type === 'comentarios') {
                         console.log(`Antes del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
                         lineaActual++;
-                        indexLineaActual = pos + matchLength; // Actualizar el índice del inicio de la nueva línea
+                        indexLineaActual = pos + matchLength + 8; // Actualizar el índice del inicio de la nueva línea
                         editor.markText(from, to, { className: 'comentario' });
                         console.log(`Después del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
                     } else if (match.type === 'palabrasClave' || match.type === 'palabraReservada_tiposDatos' || match.type === 'controlJuego') {
@@ -88,7 +96,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return { tokens, errores };
     }
+    // Agregar la lista de palabras reservadas completas
+    const palabrasReservadas = ['BANDERIN', 'ANOTAR', 'GOL', 'VASCULACION', 'DISPARO', 'PENALTI', 'TARJETA_ROJA', 'TARJETA_AMARILLA', 'REMATE', 'ALCANSA_BOLA', 'SAQUE_DE_ESQUINA', 'SAQUE_DE_PORTERIA', 'LOCAL', 'FISICO', 'CONTRA_ATAQUE', 'BLOQUEO', 'MARCAR', 'GOL_OLIMPICO', 'JUGADA', 'ESQUINA', 'CABEZAZO', 'BICICLETA', 'REPETIR', 'CARRERA', 'DELANTERO', 'CENTROCAMPISTA', 'DEFENSA', 'PORTERO', 'EXTREMO', 'VOLANTE', 'TECNICO', 'LATERAL', 'ARBITRO', 'PASE', 'RECHAZO', 'PASE_FILTRADO', 'OPCION', 'FALTA', 'DEFECTO', 'DRIBLE', 'REGATEO', 'TIRO_REGATEO'];
 
+    // Función para calcular la distancia de Levenshtein
+    function levenshtein(a, b) {
+        const matrix = [];
+        let i, j;
+        if (a.length === 0) return b.length;
+        if (b.length === 0) return a.length;
+        for (i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+        for (j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+        for (i = 1; i <= b.length; i++) {
+            for (j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
+    // Función para verificar si una palabra se parece a alguna palabra reservada
+    function verificarPalabraReservadaMalEscrita(palabra) {
+        let mejorSimilitud = Infinity;
+        let palabraCercana = '';
+
+        palabrasReservadas.forEach(reservada => {
+            const distancia = levenshtein(palabra, reservada);
+            const longitudMaxima = Math.max(palabra.length, reservada.length);
+            const similitud = 1 - distancia / longitudMaxima;
+
+            if (similitud >= 0.75) {
+                if (distancia < mejorSimilitud) {
+                    mejorSimilitud = distancia;
+                    palabraCercana = reservada;
+                }
+            }
+        });
+
+        if (mejorSimilitud !== Infinity) {
+            return { esMalEscrita: true, cercana: palabraCercana };
+        }
+
+        return { esMalEscrita: false };
+    }
 
     function updateTokenTable(tokens) {
         var tbody = document.getElementById('tokenTableBody');
