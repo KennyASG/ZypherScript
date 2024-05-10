@@ -9,14 +9,30 @@ document.addEventListener('DOMContentLoaded', function () {
         const regexPatterns = [
             { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
             { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
-            { tipo: 'palabrasClave', regex: /\b(BANDERIN|ANOTAR|GOL|VASCULACION|DISPARO|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|SAQUE_DE_PORTERIA|LOCAL|FISICO|CONTRA_ATAQUE|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|CARRERA)\b/g },
-            { tipo: 'palabraReservada_tiposDatos', regex: /\b(BANDERIN|DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL)\b/g },
-            { tipo: 'controlJuego', regex: /\b(PASE|RECHAZO|PASE_FILTRADO|OPCION|FALTA|DEFECTO|DRIBLE|REGATEO|TIRO_REGATEO)\b/g },
+            { tipo: 'T_PalabrasClave', regex: /\b(BANDERIN|ANOTAR|ARBITRO|DELANTERO|GOL|TECNICO|PARTIDO|VASCULACION|DISPARO|VAR|TIRO|VOLANTE|CAMISOLA|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|EXTREMO|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|DEFENSA|SAQUE_DE_PORTERIA|PORTERO|LOCAL|CONTRATACION|FISICO|BANCA|CONTRA_ATAQUE|CENTROCAMPISTA|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|PELOTA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|FORMACION|CARRERA)\b/g },
+            { tipo: 'T_OpeLogicos', regex: /\b(DOBLETE|SOLO|GOL_ANULADO|MANO_A_MANO)\b/g },
+            { tipo: 'T_SentenciaControl', regex: /\b(PASE|RECHAZO|PASE_FILTRADO|OPCION|FALTA|DEFECTO)\b/g },
+            { tipo: 'T_Ciclos', regex: /\b(DRIBLE|REGATEO|TIRO_REGATEO)\b/g },
+            { tipo: 'T_ModifAcceso', regex: /\b(PLANTILLA|BANCA|NO_CONVOCADO|LESIONADO)\b/g },
             { tipo: 'numeros', regex: /\b\d+\b/g },
-            { tipo: 't_boolean', regex: /\b(ARBITRO)\b/g },
+            { tipo: 'Operador_de_asignacion', regex: /(?:\+=|-=|\*=|\/=|%=|<<=|>>=|>>>=|&=|\|=|\^=)/g },
+            { tipo: 'Operador_Aritmetico', regex: /(?:\*|\+|-|\/|%)|\b(?:\*|\+|-|\/|%)\b/g },
+            { tipo: 'Operador_Logico', regex: /\b(DOBLETE|SOLO|GOL_ANULADO|MANO_A_MANO)\b/g },
+            { tipo: 'Operador_Relacional', regex: /(?:>=|<=|==|!=|>|<)/g },
             { tipo: 'identificadores', regex: /\b[a-zA-Z][_a-zA-Z0-9]*\b/g },
-            { tipo: 'simbolos', regex: /[!@#%&*()_\-=+\[\]{}\\|:;'<>.\/]+/g },
-            { tipo: 'mensajeSalida', regex: /"[^"]*"/g }  // Añadir esta nueva línea para manejar los mensajes de salida entre comillas
+            { tipo: 'mensajeSalida', regex: /"[^"]*"/g },  // Añadir esta nueva línea para manejar los mensajes de salida entre comillas
+            { tipo: 'Llave_de_apertura', regex: /\{/g },
+            { tipo: 'Llave_de_cierre', regex: /\}/g },
+            { tipo: 'Parentesis_Apertura', regex: /\(/g },
+            { tipo: 'Parentesis_Cierre', regex: /\)/g },
+            { tipo: 'PuntoyComa', regex: /\;/g },
+            { tipo: 'DosPuntos', regex: /\:/g },
+            { tipo: 'SignoIgual', regex: /\=/g },
+            { tipo: 'Punto', regex: /\./g },
+            { tipo: 'Coma', regex: /\,/g },
+            { tipo: 'Corchete_Apertura', regex: /\[/g },
+            { tipo: 'Corchete_Cierre', regex: /\]/g }
+
         ];
 
         let pos = 0;
@@ -71,18 +87,24 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (match.type === 'comentarios') {
                         console.log(`Antes del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
                         lineaActual++;
-                        indexLineaActual = pos + 50; // Actualizar el índice del inicio de la nueva línea
+                        indexLineaActual = pos + matchLength + 8; // Actualizar el índice del inicio de la nueva línea
                         editor.markText(from, to, { className: 'comentario' });
                         console.log(`Después del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
                         //COLORACION PALABRAS RESERVADAS
-                    } else if (match.type === 'palabrasClave' || match.type === 'palabraReservada_tiposDatos' || match.type === 'controlJuego') {
+                    } else if (match.type === 'T_PalabrasClave' || match.type === 'T_OpeLogicos' || match.type === 'T_SentenciaControl' || match.type === 'T_Ciclos' || match.type === 'T_ModifAcceso') {
                         editor.markText(from, to, { className: 'palabraReservada' });
                     } else if (match.type === 'numeros') {
                         editor.markText(from, to, { className: 'numero' });
                     } else if (match.type === 'mensajeSalida') {
                         editor.markText(from, to, { className: 'mensajeSalida' });
-                    }else if (match.type === 't_boolean') {
-                        editor.markText(from, to, { className: 'palabraReservada' });
+                    } else if (match.type === 'Operador_de_asignacion') {
+                        editor.markText(from, to, { className: 'simbolo' });
+                    } else if (match.type === 'Operador_Aritmetico') {
+                        editor.markText(from, to, { className: 'simbolo' });
+                    } else if (match.type === 'Operador_Logico') {
+                        editor.markText(from, to, { className: 'simbolo' });
+                    } else if (match.type === 'Operador_Relacional' || match.type === 'Llave_de_apertura' || match.type === 'Llave_de_cierre' || match.type === 'Parentesis_Apertura' || match.type === 'Parentesis_Cierre' || match.type === 'PuntoyComa' || match.type === 'Punto' || match.type === 'DosPuntos' || match.type === 'SignoIgual'||match.type === 'Coma'|| match.type === 'Corchete_Apertura' || match.type === 'Corchete_Cierre') {
+                        editor.markText(from, to, { className: 'simbolo' });
                     }
                 }
                 pos = lastPos = match.index + matchLength;
@@ -103,8 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return { tokens, errores };
     }
     // Agregar la lista de palabras reservadas completas
-    const palabrasReservadas = ['BANDERIN', 'ANOTAR', 'GOL', 'VASCULACION', 'DISPARO', 'PENALTI', 'TARJETA_ROJA', 'TARJETA_AMARILLA', 'REMATE', 'ALCANSA_BOLA', 'SAQUE_DE_ESQUINA', 'SAQUE_DE_PORTERIA', 'LOCAL', 'FISICO', 'CONTRA_ATAQUE', 'BLOQUEO', 'MARCAR', 'GOL_OLIMPICO', 'JUGADA', 'ESQUINA', 'CABEZAZO', 'BICICLETA', 'REPETIR', 'CARRERA', 'DELANTERO', 'CENTROCAMPISTA', 'DEFENSA', 'PORTERO', 'EXTREMO', 'VOLANTE', 'TECNICO', 'LATERAL', 'ARBITRO', 'PASE', 'RECHAZO', 'PASE_FILTRADO', 'OPCION', 'FALTA', 'DEFECTO', 'DRIBLE', 'REGATEO', 'TIRO_REGATEO'];
-
+    const palabrasReservadas = ['BANDERIN', 'ANOTAR', 'DELANTERO', 'GOL', 'TECNICO', 'PARTIDO', 'VASCULACION', 'DISPARO', 'VAR', 'TIRO', 'VOLANTE', 'CAMISOLA', 'PENALTI', 'TARJETA_ROJA', 'TARJETA_AMARILLA', 'EXTREMO', 'REMATE', 'ALCANSA_BOLA', 'SAQUE_DE_ESQUINA', 'DEFENSA', 'SAQUE_DE_PORTERIA', 'PORTERO', 'LOCAL', 'CONTRATACION', 'FISICO', 'BANCA', 'CONTRA_ATAQUE', 'CENTROCAMPISTA', 'BLOQUEO', 'MARCAR', 'GOL_OLIMPICO', 'JUGADA', 'PELOTA', 'ESQUINA', 'CABEZAZO', 'BICICLETA', 'REPETIR', 'FORMACION', 'CARRERA', 'DOBLETE', 'SOLO', 'GOL_ANULADO', 'MANO_A_MANO', 'PASE', 'RECHAZO', 'PASE_FILTRADO', 'OPCION', 'FALTA', 'DEFECTO', 'DRIBLE', 'REGATEO', 'TIRO_REGATEO', 'PLANTILLA', 'BANCA', 'NO_CONVOCADO', 'LESIONADO'];
     // Función para calcular la distancia de Levenshtein
     function levenshtein(a, b) {
         const matrix = [];
