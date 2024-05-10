@@ -41,7 +41,7 @@
 </nav>
 
 <div class="container text-center">
-    <h1 class="mt-5">Cargar Archivo .zy</h1>
+    <h1 class="mt-5">Cargar Archivo .atom</h1>
     <input type="file" id="fileInput" class="btn btn-success">
     <textarea id="codeEditor" class="code-editor"></textarea>
      <!-- Botones -->
@@ -116,8 +116,8 @@
         var file = this.files[0];
         if (file) {
             var extension = file.name.split('.').pop();
-            if (extension.toLowerCase() !== 'zy') {
-                alert('Extensión no permitida, cargar archivos .zy');
+            if (extension.toLowerCase() !== 'atom') {
+                alert('Extensión no permitida, cargar archivos .atom');
                 return;
             }
             var reader = new FileReader();

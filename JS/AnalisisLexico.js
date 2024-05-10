@@ -5,13 +5,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const errores = [];
         let lineaActual = 1;
         let indexLineaActual = 0; // Indica el índice del inicio de la línea actual en el texto completo
+        //AGREGAR TOKENS
         const regexPatterns = [
             { tipo: 'comentarios', regex: /\/\/[^\n]*\n?/g }, // Asegúrate de que la regex maneja los comentarios correctamente
             { tipo: 'nuevaLinea', regex: /(\r\n|\n|\r)/g }, // Asegúrate de manejar nuevaLinea antes que otros tokens
             { tipo: 'palabrasClave', regex: /\b(BANDERIN|ANOTAR|GOL|VASCULACION|DISPARO|PENALTI|TARJETA_ROJA|TARJETA_AMARILLA|REMATE|ALCANSA_BOLA|SAQUE_DE_ESQUINA|SAQUE_DE_PORTERIA|LOCAL|FISICO|CONTRA_ATAQUE|BLOQUEO|MARCAR|GOL_OLIMPICO|JUGADA|ESQUINA|CABEZAZO|BICICLETA|REPETIR|CARRERA)\b/g },
-            { tipo: 'palabraReservada_tiposDatos', regex: /\b(BANDERIN|DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL|ARBITRO)\b/g },
+            { tipo: 'palabraReservada_tiposDatos', regex: /\b(BANDERIN|DELANTERO|CENTROCAMPISTA|DEFENSA|PORTERO|EXTREMO|VOLANTE|TECNICO|LATERAL)\b/g },
             { tipo: 'controlJuego', regex: /\b(PASE|RECHAZO|PASE_FILTRADO|OPCION|FALTA|DEFECTO|DRIBLE|REGATEO|TIRO_REGATEO)\b/g },
             { tipo: 'numeros', regex: /\b\d+\b/g },
+            { tipo: 't_boolean', regex: /\b(ARBITRO)\b/g },
             { tipo: 'identificadores', regex: /\b[a-zA-Z][_a-zA-Z0-9]*\b/g },
             { tipo: 'simbolos', regex: /[!@#%&*()_\-=+\[\]{}\\|:;'<>.\/]+/g },
             { tipo: 'mensajeSalida', regex: /"[^"]*"/g }  // Añadir esta nueva línea para manejar los mensajes de salida entre comillas
@@ -34,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     matchLength = found[0].length;
                 }
             });
+            //INICIO COLORACION
             let startCh = match.index - indexLineaActual; // Posición de inicio relativa al inicio de la línea
             let endCh = startCh + match[0].length; // Posición de final relativa al inicio de la línea
             let from = { line: lineaActual - 1, ch: startCh };
@@ -68,15 +71,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (match.type === 'comentarios') {
                         console.log(`Antes del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
                         lineaActual++;
-                        indexLineaActual = pos + matchLength + 8; // Actualizar el índice del inicio de la nueva línea
+                        indexLineaActual = pos + 50; // Actualizar el índice del inicio de la nueva línea
                         editor.markText(from, to, { className: 'comentario' });
                         console.log(`Después del comentario - lineaActual: ${lineaActual}, indexLineaActual: ${indexLineaActual}`);
+                        //COLORACION PALABRAS RESERVADAS
                     } else if (match.type === 'palabrasClave' || match.type === 'palabraReservada_tiposDatos' || match.type === 'controlJuego') {
                         editor.markText(from, to, { className: 'palabraReservada' });
                     } else if (match.type === 'numeros') {
                         editor.markText(from, to, { className: 'numero' });
                     } else if (match.type === 'mensajeSalida') {
                         editor.markText(from, to, { className: 'mensajeSalida' });
+                    }else if (match.type === 't_boolean') {
+                        editor.markText(from, to, { className: 'palabraReservada' });
                     }
                 }
                 pos = lastPos = match.index + matchLength;
